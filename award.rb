@@ -27,8 +27,12 @@ Award = Struct.new(:name, :expires_in, :quality) do
 		name == 'Blue Compare'
 	end
 
+	def blue_star?
+		name == 'Blue Star'
+	end
+
 	def normal?
-		!self.blue_distinction_plus? && !self.blue_first? && !self.blue_compare?
+		!self.blue_distinction_plus? && !self.blue_first? && !self.blue_compare? && !self.blue_star?
 	end
 
 	def decrease_expiration
@@ -49,4 +53,8 @@ Award = Struct.new(:name, :expires_in, :quality) do
 		end
 	end
 
+	def decrease_quality_twice
+		self.decrease_quality
+		self.decrease_quality
+	end
 end
