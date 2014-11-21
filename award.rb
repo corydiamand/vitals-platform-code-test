@@ -11,6 +11,10 @@ Award = Struct.new(:name, :expires_in, :quality) do
 		quality > QUALITY_MIN
 	end
 
+	def expired?
+		expires_in < 0
+	end
+
 	def blue_distinction_plus?
 		name == 'Blue Distinction Plus'
 	end
@@ -23,16 +27,26 @@ Award = Struct.new(:name, :expires_in, :quality) do
 		name == 'Blue Compare'
 	end
 
+	def normal?
+		!self.blue_distinction_plus? && !self.blue_first? && !self.blue_compare?
+	end
+
 	def decrease_expiration
-		self.expires_in -= 1
+		if !self.blue_distinction_plus?
+			self.expires_in -= 1
+		end
 	end
 
 	def increase_quality
-		self.quality += 1
+		if self.below_quality_max?
+			self.quality += 1
+		end
 	end
 
 	def decrease_quality
-		self.quality -= 1
+		if self.above_quality_min?
+			self.quality -= 1
+		end
 	end
 
 end
